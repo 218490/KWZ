@@ -1,15 +1,16 @@
 #ifndef WIERZCHOLEK_HH
 #define WIERZCHOLEK_HH
 #include <vector>
+#include <iostream>
 using namespace std;
 
 class Zadanie {
 
+public:
+  
   vector<Zadanie*> poprzedzajace;
   vector<Zadanie*> nastepujace;
   
-public:
-
   int numer; // nr zadania
   int ES; // early start
   int EF; // early finish

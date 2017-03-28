@@ -4,19 +4,28 @@
 #include <string>
 using namespace std;
 
-int main() {
+int main(int argc, char** argv) {
 
   fstream plikDanych;
-  plikDanych.open("data10.txt", fstream::in);
+
+  if (argc > 1)
+    plikDanych.open(argv[1], fstream::in);
+
+  else {
+    
+    cerr << "Brak pliku wejsciowego" << endl;
+    exit(-1);
+  }
 
   int iloscZadan;
   int iloscZaleznosci;
   string bufor;
   string metaDane = string();
   string dane = string();
-  int i = 0, j = 0, temp;
+  int i = 0, j = 0;
   int *czasyPrzetwarzania;
   int nrZadania, nrZadaniaPoprzedzajacego;
+  unsigned int rozmiar;
 
   // wczytywanie danych z pliku - start
   
@@ -70,16 +79,6 @@ int main() {
     nrZadania = stoi(dane);
     dane.clear();
 
-    // założyłem, że numer zadania poprzedzającego powinien być
-    // mniejszy od numeru zadania
-    if (nrZadania < nrZadaniaPoprzedzajacego) {
-
-      temp = nrZadania;
-      nrZadania = nrZadaniaPoprzedzajacego;
-      nrZadaniaPoprzedzajacego = temp;
-
-    }
-
     projekt.dodajZaleznosc(nrZadaniaPoprzedzajacego, nrZadania);
 
     while (bufor[j] == ' ') j++;
@@ -89,9 +88,25 @@ int main() {
   plikDanych.close();
 
   // wczytywanie danych z pliku - koniec
-
   
-  // projekt.obliczParametryZadan();
+  projekt.obliczParametryZadan();
+  projekt.wyznaczSciezkeKrytyczna();
 
-  // cout << "Czas wykonywania: " << projekt.czasWykonywaniaProjektu << endl;
+  cout << "process time:" << endl
+       << projekt.czasWykonywaniaProjektu << endl;
+
+  cout << "earlyStart earlyFinish lateStart lateFinish:" << endl;
+
+  for (unsigned int i = 0; i < projekt.zadania.size(); i++)
+    cout << projekt.zadania[i]->ES << " " << projekt.zadania[i]->EF << " "
+	 << projekt.zadania[i]->LS << " " << projekt.zadania[i]->LF << endl;
+
+  rozmiar = projekt.sciezkaKrytyczna.size();
+  cout << "critical path:" << endl;
+
+  for (unsigned int i = 0; i < rozmiar; i++)
+    cout << projekt.sciezkaKrytyczna[rozmiar-1-i]->numer << " "
+	 << projekt.sciezkaKrytyczna[rozmiar-1-i]->ES << " "
+      	 << projekt.sciezkaKrytyczna[rozmiar-1-i]->EF << endl;
+  
 }

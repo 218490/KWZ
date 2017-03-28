@@ -10,6 +10,7 @@ public:
   int iloscZadan;
   int czasWykonywaniaProjektu; // EFmax
   vector<Zadanie*> zadania;
+  vector<Zadanie*> sciezkaKrytyczna;
   
   Projekt(int iloscZadan, int *czasyPrzetwarzania);
   
@@ -17,6 +18,8 @@ public:
 		      int nrZadania);
 
   void obliczParametryZadan();
+
+  void wyznaczSciezkeKrytyczna();
 
 };
 

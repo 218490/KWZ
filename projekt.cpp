@@ -35,3 +35,36 @@ void Projekt::obliczParametryZadan() {
   for (unsigned int i = 0; i < zadania.size(); i++)
     zadania[i]->obliczParametryLATE(czasWykonywaniaProjektu);
 }
+
+void Projekt::wyznaczSciezkeKrytyczna() {
+
+  unsigned int i;
+  Zadanie *zadanie = nullptr, *zadaniePoprzedzajace;
+  
+  for (i = 0; i < zadania.size(); i++)
+    if (zadania[i]->ES == zadania[i]->LS
+	and zadania[i]->LF == czasWykonywaniaProjektu) {
+
+      zadanie = zadania[i];
+      sciezkaKrytyczna.push_back(zadanie);
+      break;
+    }
+
+  zadaniePoprzedzajace = zadanie;
+  
+  while (zadaniePoprzedzajace != nullptr) {
+
+    zadaniePoprzedzajace = nullptr;
+    
+    for (i = 0; i < zadanie->poprzedzajace.size(); i++)
+      if (zadanie->poprzedzajace[i]->ES == zadanie->poprzedzajace[i]->LS
+	  and zadanie->poprzedzajace[i]->LF == zadanie->LS) {
+
+	zadaniePoprzedzajace = zadanie->poprzedzajace[i];
+	zadanie = zadaniePoprzedzajace;
+	sciezkaKrytyczna.push_back(zadaniePoprzedzajace);
+	break;
+      }
+	
+  }
+}

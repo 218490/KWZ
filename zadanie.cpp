@@ -5,8 +5,8 @@ Zadanie::Zadanie(int numer, int czasPrzetwarzania) {
 
   Zadanie::numer = numer;
   PT = czasPrzetwarzania;
-  ES = LS = 0;
-  EF = LF = czasPrzetwarzania;
+  ES = LS = -1;
+  EF = LF = -1;
 
 }
 
@@ -25,7 +25,20 @@ void Zadanie::dodajNastepnika(Zadanie *nastepnik) {
 int Zadanie::obliczParametryEARLY() {
   
   // oblicz EF i ES
+  ES = 0;
+  
+  for (unsigned int i = 0; i < poprzedzajace.size(); i++) {
+    
+    if (poprzedzajace[i]->EF == -1)
+      poprzedzajace[i]->obliczParametryEARLY();
 
+    if (poprzedzajace[i]->EF > ES)
+      ES = poprzedzajace[i]->EF;
+
+  }
+
+  EF = ES + PT;
+    
   return EF;
 }
 
@@ -33,5 +46,18 @@ int Zadanie::obliczParametryEARLY() {
 void Zadanie::obliczParametryLATE(int czasWykonywaniaProjektu) {
   
   // oblicz LS i LF, czasWykonywaniaProjektu == największe EF
+  LF = czasWykonywaniaProjektu;
+
+  for (unsigned int i = 0; i < nastepujace.size(); i++) {
+
+    if (nastepujace[i]->LS == -1)
+      nastepujace[i]->obliczParametryLATE(czasWykonywaniaProjektu);
+
+    if (nastepujace[i]->LS < LF)
+      LF = nastepujace[i]->LS;
+
+  }
+
+  LS = LF - PT;
   
 }
