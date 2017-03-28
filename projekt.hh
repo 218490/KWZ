@@ -21,6 +21,8 @@ public:
 
   void wyznaczSciezkeKrytyczna();
 
+  ~Projekt();
+
 };
 
 #endif

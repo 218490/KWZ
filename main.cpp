@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
   unsigned int rozmiar;
 
   // wczytywanie danych z pliku - start
-  
+
   getline(plikDanych, bufor);
   while (bufor[i] != ' ')
     metaDane += bufor[i++];
@@ -37,7 +37,8 @@ int main(int argc, char** argv) {
   metaDane.clear();
   
   while (bufor[i] == ' ') i++;
-  while (bufor[i] != ' ' and bufor[i] != '\n')
+  while (bufor[i] != ' ' and bufor[i] != '\r'
+	 and bufor[i] != '\n')
     metaDane += bufor[i++];
 
   iloscZaleznosci = stoi(metaDane);
@@ -48,7 +49,8 @@ int main(int argc, char** argv) {
   
   for (i = 0; i < iloscZadan; i++) {
 
-    while (bufor[j] != ' ')
+    while (bufor[j] != ' ' and bufor[j] != '\r'
+	   and bufor[i] != '\n')
       dane += bufor[j++];
 
     czasyPrzetwarzania[i] = stoi(dane);
@@ -73,7 +75,8 @@ int main(int argc, char** argv) {
 
     while (bufor[j] == ' ') j++;
 
-    while (bufor[j] != ' ')
+    while (bufor[j] != ' ' and bufor[j] != '\r'
+	   and bufor[i] != '\n')
       dane += bufor[j++];
 
     nrZadania = stoi(dane);
@@ -88,10 +91,10 @@ int main(int argc, char** argv) {
   plikDanych.close();
 
   // wczytywanie danych z pliku - koniec
-  
+
   projekt.obliczParametryZadan();
   projekt.wyznaczSciezkeKrytyczna();
-
+  
   cout << "process time:" << endl
        << projekt.czasWykonywaniaProjektu << endl;
 

@@ -68,3 +68,10 @@ void Projekt::wyznaczSciezkeKrytyczna() {
 	
   }
 }
+
+Projekt::~Projekt() {
+
+  for (int i = 0; i < iloscZadan; i++)
+    delete zadania[i];
+
+}
